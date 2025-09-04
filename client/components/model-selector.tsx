@@ -63,7 +63,7 @@ export function ModelSelector({ onEvaluationResult, onEvaluationStart }: ModelSe
     onEvaluationStart();
 
     try {
-      const response = await fetch("http://localhost:4000/evaluate", {
+      const response = await fetch("https://io-ai-project.onrender.com/evaluate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
