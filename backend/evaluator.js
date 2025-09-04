@@ -1,12 +1,14 @@
 import fs from "fs";
 import { configDotenv } from "dotenv";
+// import fetch from "node-fetch";
+
 configDotenv();
 
 const API_KEY = process.env.IOINTELLIGENCE_API_KEY;
 const API_URL = "https://api.intelligence.io.solutions/api/v1/chat/completions";
 
-// Call to io.net API for classification
-async function classifyText(text) {
+// Call to io.net API for evaluation
+export async function classifyText(model, text) {
   const start = Date.now();
 
   const response = await fetch(API_URL, {
@@ -16,14 +18,13 @@ async function classifyText(text) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "meta-llama/Llama-3.3-70B-Instruct",
+      model,
       messages: [{ role: "user", content: `Classify sentiment: "${text}"` }],
       temperature: 0,
     }),
   });
 
   const data = await response.json();
-  console.log(data);
   const latency = Date.now() - start;
 
   const prediction = data?.choices?.[0]?.message?.content?.trim() || "Unknown";
@@ -32,8 +33,8 @@ async function classifyText(text) {
   return { prediction, latency, tokens };
 }
 
-// Run evaluation on dataset
-export async function runEvaluation() {
+// Batch run evaluation using dataset.json
+export async function runEvaluation(model) {
   const dataset = JSON.parse(fs.readFileSync("./dataset.json"));
   let correct = 0;
   let totalLatency = 0;
@@ -43,7 +44,7 @@ export async function runEvaluation() {
 
   for (const item of dataset) {
     const { input, expected } = item;
-    const { prediction, latency, tokens } = await classifyText(input);
+    const { prediction, latency, tokens } = await classifyText(model, input);
 
     const isCorrect = prediction.toLowerCase().includes(expected.toLowerCase());
     if (isCorrect) correct++;

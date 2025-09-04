@@ -13,6 +13,26 @@ app.get("/", (req, res) => {
   res.send("AI Model Evaluation Dashboard Backend");
 });
 
+app.get("/models", async (req, res) => {
+  try {
+    const response = await fetch("https://api.intelligence.io.solutions/api/v1/models", {
+      headers: {
+        "Authorization": `Bearer ${process.env.IOINTELLIGENCE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch models: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Run evaluation manually
 app.post("/evaluate", async (req, res) => {
   try {
