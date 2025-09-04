@@ -1,7 +1,5 @@
 import fs from "fs";
 import { configDotenv } from "dotenv";
-// import fetch from "node-fetch";
-
 configDotenv();
 
 const API_KEY = process.env.IOINTELLIGENCE_API_KEY;

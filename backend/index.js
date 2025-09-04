@@ -2,9 +2,12 @@ import express from "express";
 import { runEvaluation } from "./evaluator.js";
 import fs from "fs";
 import cors from "cors";
+import { configDotenv } from "dotenv";
+configDotenv();
 
 const app = express();
 const PORT = 4000;
+const API_KEY = process.env.IOINTELLIGENCE_API_KEY;
 
 app.use(cors());
 
@@ -17,7 +20,7 @@ app.get("/models", async (req, res) => {
   try {
     const response = await fetch("https://api.intelligence.io.solutions/api/v1/models", {
       headers: {
-        "Authorization": `Bearer ${process.env.IOINTELLIGENCE_API_KEY}`,
+        "Authorization": `Bearer ${API_KEY}`,
         "Content-Type": "application/json",
       },
     });
