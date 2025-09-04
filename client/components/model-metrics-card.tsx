@@ -6,10 +6,10 @@ interface ModelMetricsCardProps {
   value: string
   change: string
   trend: "up" | "down"
-  prediction: string
+  description: string
 }
 
-export function ModelMetricsCard({ title, value, change, trend, prediction }: ModelMetricsCardProps) {
+export function ModelMetricsCard({ title, value, change, trend, description }: ModelMetricsCardProps) {
   const TrendIcon = trend === "up" ? TrendingUp : TrendingDown
   const trendColor = trend === "up" ? "text-green-600" : "text-red-600"
 
@@ -25,7 +25,7 @@ export function ModelMetricsCard({ title, value, change, trend, prediction }: Mo
           <span className={trendColor}>{change}</span>
           <span className="text-muted-foreground">from last evaluation</span>
         </div>
-        <CardDescription className="mt-2">{prediction}</CardDescription>
+        <CardDescription className="mt-2">{description}</CardDescription>
       </CardContent>
     </Card>
   )
