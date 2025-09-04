@@ -1,9 +1,12 @@
 import express from "express";
 import { runEvaluation } from "./evaluator.js";
 import fs from "fs";
+import cors from "cors";
 
 const app = express();
 const PORT = 4000;
+
+app.use(cors());
 
 // Health check
 app.get("/", (req, res) => {

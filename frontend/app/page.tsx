@@ -1,9 +1,37 @@
+"use client"
 import { ModelMetricsCard } from "@/components/model-metrics-card"
 import { ModelComparisonTable } from "@/components/model-comparison-table"
 import { PerformanceChart } from "@/components/performance-chart"
 import { ModelSelector } from "@/components/model-selector"
+import { useEffect, useState } from "react"
+
+
 
 export default function Dashboard() {
+  const [apiData, setApiData] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://io-ai-project.onrender.com/evaluate", {
+          headers: {
+          "Content-Type": "application/json"
+          }
+        })
+        const data = await response.json()
+        setApiData(data)
+        console.log("[v0] API data received:", data)
+      } catch (error) {
+        console.error("[v0] API call failed:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="mx-auto max-w-7xl space-y-8">
