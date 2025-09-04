@@ -30,7 +30,8 @@ app.get("/models", async (req, res) => {
     }
 
     const data = await response.json();
-    res.json(data.data);
+    const models = data.map(model => model.id);
+    res.json(models);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
